@@ -43,7 +43,6 @@
     "get-port": "^5.1.0",
     "json-schema": "^0.4.0",
     "zod": "^4.2.1",
-    "zod-to-json-schema": "^3.25.0",
     "dotprompt": "^1.1.1"
   },
   "devDependencies": {

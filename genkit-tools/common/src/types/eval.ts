@@ -16,7 +16,6 @@
 
 import type { JSONSchema7 } from 'json-schema';
 import { z } from 'zod';
-import zodToJsonSchema from 'zod-to-json-schema';
 import type {
   CreateDatasetRequest,
   ListEvalKeysRequest,
@@ -37,35 +36,25 @@ export const ModelInferenceInputSchema = z.union([
   GenerateRequestSchema,
 ]);
 export type ModelInferenceInput = z.infer<typeof ModelInferenceInputSchema>;
-export const ModelInferenceInputJSONSchema = zodToJsonSchema(
-  ModelInferenceInputSchema,
-  {
-    $refStrategy: 'none',
-    removeAdditionalStrategy: 'strict',
-  }
-) as JSONSchema7;
+export const ModelInferenceInputJSONSchema = ModelInferenceInputSchema.toJSONSchema({
+  target: 'draft-07',
+}) as JSONSchema7;
 
 /**
  * GenerateRequest JSON schema to support eval-inference using models
  */
-export const GenerateRequestJSONSchema = zodToJsonSchema(
-  GenerateRequestSchema,
-  {
-    $refStrategy: 'none',
-    removeAdditionalStrategy: 'strict',
-  }
-) as JSONSchema7;
+export const GenerateRequestJSONSchema = GenerateRequestSchema.toJSONSchema({
+  target: 'draft-07',
+}) as JSONSchema7;
 
 /**
  * Combined GenerateInput JSON schema to support eval-inference using models
  */
-export const GenerateInputJSONSchema = zodToJsonSchema(
-  z.union([GenerateRequestSchema, GenerateActionOptionsSchema]),
-  {
-    $refStrategy: 'none',
-    removeAdditionalStrategy: 'strict',
-  }
-) as JSONSchema7;
+export const GenerateInputJSONSchema = z
+  .union([GenerateRequestSchema, GenerateActionOptionsSchema])
+  .toJSONSchema({
+    target: 'draft-07',
+  }) as JSONSchema7;
 
 /**
  * A single sample to be used for inference.
@@ -252,11 +241,11 @@ export interface EvalStore {
 
 export const DatasetSchemaSchema = z.object({
   inputSchema: z
-    .record(z.any())
+    .record(z.any(), z.any())
     .describe('Valid JSON Schema for the `input` field of dataset entry.')
     .optional(),
   referenceSchema: z
-    .record(z.any())
+    .record(z.any(), z.any())
     .describe('Valid JSON Schema for the `reference` field of dataset entry.')
     .optional(),
 });

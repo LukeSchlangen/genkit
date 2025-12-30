@@ -18,7 +18,6 @@ import * as fs from 'fs';
 import type { JSONSchema7 } from 'json-schema';
 import * as path from 'path';
 import * as z from 'zod';
-import { zodToJsonSchema } from 'zod-to-json-schema';
 
 /** List of files that contain types to be exported. */
 const EXPORTED_TYPE_MODULES = [
@@ -53,11 +52,9 @@ function generateJsonSchema(modulePaths: string[]): JSONSchema7 {
     });
   }
   // Putting all of the schemas in an object and later extracting out the definitions is the most succinct way.
-  const { $defs } = zodToJsonSchema(z.object(schemas), {
-    definitions: schemas,
-    definitionPath: '$defs',
-    target: 'jsonSchema7',
-  }) as JSONSchema7;
+  const { $defs } = z.object(schemas).toJSONSchema({
+    target: 'draft-07',
+  });
   return { $schema: 'http://json-schema.org/draft-07/schema#', $defs };
 }
 

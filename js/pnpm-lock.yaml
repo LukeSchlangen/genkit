@@ -150,9 +150,6 @@ importers:
       zod:
         specifier: ^4.2.1
         version: 4.2.1
-      zod-to-json-schema:
-        specifier: ^3.25.0
-        version: 3.25.0(zod@4.2.1)
     devDependencies:
       '@types/express':
         specifier: ^4.17.21
@@ -1070,9 +1067,6 @@ importers:
       wav:
         specifier: ^1.0.2
         version: 1.0.2
-      zod-to-json-schema:
-        specifier: ^3.25.0
-        version: 3.25.0(zod@4.2.1)
     devDependencies:
       '@types/wav':
         specifier: ^1.0.4
