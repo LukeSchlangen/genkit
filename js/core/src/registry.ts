@@ -67,7 +67,7 @@ export function isActionType(value: string): value is ActionType {
  * A schema is either a Zod schema or a JSON schema.
  */
 export interface Schema {
-  schema?: z.ZodTypeAny;
+  schema?: z.ZodType;
   jsonSchema?: JSONSchema;
 }
 
@@ -140,7 +140,7 @@ export function parseRegistryKey(
   };
 }
 
-export type ActionsRecord = Record<string, Action<z.ZodTypeAny, z.ZodTypeAny>>;
+export type ActionsRecord = Record<string, Action<any, any>>;
 export type ActionMetadataRecord = Record<string, ActionMetadata>;
 
 /**
@@ -149,8 +149,8 @@ export type ActionMetadataRecord = Record<string, ActionMetadata>;
 export class Registry {
   private actionsById: Record<
     string,
-    | Action<z.ZodTypeAny, z.ZodTypeAny>
-    | PromiseLike<Action<z.ZodTypeAny, z.ZodTypeAny>>
+    | Action<any, any>
+    | PromiseLike<Action<any, any>>
   > = {};
   private pluginsByName: Record<string, PluginProvider> = {};
   private schemasByName: Record<string, Schema> = {};
@@ -217,8 +217,8 @@ export class Registry {
    * @returns The action.
    */
   async lookupAction<
-    I extends z.ZodTypeAny,
-    O extends z.ZodTypeAny,
+    I extends z.ZodType,
+    O extends z.ZodType,
     R extends Action<I, O>,
   >(key: string): Promise<R> {
     const parsedKey = parseRegistryKey(key);
@@ -272,7 +272,7 @@ export class Registry {
    * @param type The type of the action to register.
    * @param action The action to register.
    */
-  registerAction<I extends z.ZodTypeAny, O extends z.ZodTypeAny>(
+  registerAction<I extends z.ZodType, O extends z.ZodType>(
     type: ActionType,
     action: Action<I, O>,
     opts?: { namespace?: string }
@@ -306,7 +306,7 @@ export class Registry {
   /**
    * Registers an action promise in the registry.
    */
-  registerActionAsync<I extends z.ZodTypeAny, O extends z.ZodTypeAny>(
+  registerActionAsync<I extends z.ZodType, O extends z.ZodType>(
     type: ActionType,
     name: string,
     action: PromiseLike<Action<I, O>>,
@@ -331,7 +331,7 @@ export class Registry {
    */
   async listActions(): Promise<ActionsRecord> {
     await this.initializeAllPlugins();
-    const actions: Record<string, Action<z.ZodTypeAny, z.ZodTypeAny>> = {};
+    const actions: Record<string, Action<any, any>> = {};
     await Promise.all(
       Object.entries(this.actionsById).map(async ([key, action]) => {
         actions[key] = await action;
@@ -484,7 +484,7 @@ export class Registry {
 
   async getDynamicAction(
     key: ParsedRegistryKey
-  ): Promise<Action<z.ZodTypeAny, z.ZodTypeAny> | undefined> {
+  ): Promise<Action<z.ZodType, z.ZodType> | undefined> {
     if (key.actionName.includes('*')) {
       // * means multiple actions, this returns exactly one.
       return undefined;
