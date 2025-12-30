@@ -18,7 +18,7 @@
     "@genkit-ai/googleai": "^1.0.4",
     "@genkit-ai/express": "^1.0.4",
     "express": "^4.21.0",
-    "zod": "^3.23.8"
+    "zod": "^4.2.1"
   },
   "devDependencies": {
     "genkit-cli": "^1.0.4",
