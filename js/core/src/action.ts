@@ -418,7 +418,7 @@ export function action<
     input?: z.infer<I>,
     opts?: ActionRunOptions<z.infer<S>>
   ): StreamingResponse<O, S> => {
-    let chunkStreamController: ReadableStreamController<z.infer<S>>;
+    let chunkStreamController: ReadableStreamDefaultController<z.infer<S>>;
     const chunkStream = new ReadableStream<z.infer<S>>({
       start(controller) {
         chunkStreamController = controller;
@@ -493,7 +493,7 @@ export function defineAction<
         'See: https://github.com/firebase/genkit/blob/main/docs/errors/no_new_actions_at_runtime.md'
     );
   }
-  const act = action(config, async (i: I, options): Promise<z.infer<O>> => {
+  const act = action(config, async (i: z.infer<I>, options): Promise<z.infer<O>> => {
     await registry.initializeAllPlugins();
     return await runInActionRuntimeContext(() => fn(i, options));
   });
@@ -525,16 +525,16 @@ export function defineActionAsync<
     typeof name === 'string' ? name : `${name.pluginId}/${name.actionId}`;
   const actionPromise = lazy(() =>
     config.then((resolvedConfig) => {
-      const act = action(
-        resolvedConfig,
-        async (i: I, options): Promise<z.infer<O>> => {
-          await registry.initializeAllPlugins();
-          return await runInActionRuntimeContext(() =>
-            resolvedConfig.fn(i, options)
-          );
-        }
-      );
-      act.__action.actionType = actionType;
+              const act = action(
+                resolvedConfig,
+                async (i: z.infer<I>, options): Promise<z.infer<O>> => {
+                  await registry.initializeAllPlugins();
+                  return await runInActionRuntimeContext(() =>
+                    resolvedConfig.fn(i, options)
+                  );
+                }
+              );
+              act.__action.actionType = actionType;
       onInit?.(act);
       return act;
     })
