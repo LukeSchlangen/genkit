@@ -223,7 +223,7 @@ export async function resolveTools<
       } else if ((ref as ToolDefinition).name) {
         return await lookupToolByName(
           registry,
-          (ref as ToolDefinition).metadata?.originalName ||
+          ((ref as ToolDefinition).metadata?.originalName as string) ||
             (ref as ToolDefinition).name
         );
       }
@@ -331,7 +331,7 @@ export function defineTool<I extends z.ZodTypeAny, O extends z.ZodTypeAny>(
     // For non-multipart tools, we register a v2 tool action as well
     registry.registerAction('tool.v2', basicToolV2(config, fn as ToolFn<I, O>));
   }
-  return a as ToolAction<I, O>;
+  return a;
 }
 
 function implementTool<I extends z.ZodTypeAny, O extends z.ZodTypeAny>(
