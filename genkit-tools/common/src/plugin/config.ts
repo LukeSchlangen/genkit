@@ -39,14 +39,22 @@ export type OutputStepSelector = z.infer<typeof OutputSelectorSchema>;
 const StepSelectorSchema = z.union([InputSelectorSchema, OutputSelectorSchema]);
 export type StepSelector = z.infer<typeof StepSelectorSchema>;
 
-const EvaluationExtractorSchema = z.record(
-  z.enum(EVAL_FIELDS),
-  z.union([
-    z.string(), // specify the displayName (default to output)
-    StepSelectorSchema, //, {inputOf: 'my-step-name'}
-    z.function().args(TraceDataSchema).returns(z.any()), // custom trace extractor
-  ])
-);
+const EvaluationExtractorValueSchema = z.union([
+  z.string(), // specify the displayName (default to output)
+  StepSelectorSchema, //, {inputOf: 'my-step-name'}
+  z.function({
+    input: z.tuple([TraceDataSchema]),
+    output: z.any(),
+  }), // custom trace extractor
+]);
+
+const EvaluationExtractorSchema = z
+  .object({
+    input: EvaluationExtractorValueSchema,
+    output: EvaluationExtractorValueSchema,
+    context: EvaluationExtractorValueSchema,
+  })
+  .partial();
 export type EvaluationExtractor = z.infer<typeof EvaluationExtractorSchema>;
 
 export function isEvalField(input: string): input is EvalField {

@@ -35,10 +35,10 @@ export const BaseToolPluginActionSchema = z.object({
       })
     )
   ),
-  hook: z
-    .function()
-    .args(z.optional(z.record(z.string(), SupportedFlagValuesSchema)))
-    .returns(z.union([z.void(), z.promise(z.void())])),
+  hook: z.function({
+    input: z.tuple([z.optional(z.record(z.string(), SupportedFlagValuesSchema))]),
+    output: z.union([z.void(), z.promise(z.void())]),
+  }),
 });
 
 export const ToolPluginActionSchema = BaseToolPluginActionSchema.extend({

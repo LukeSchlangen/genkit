@@ -147,11 +147,7 @@ export type ActionMetadataRecord = Record<string, ActionMetadata>;
  * The registry is used to store and lookup actions, trace stores, flow state stores, plugins, and schemas.
  */
 export class Registry {
-  private actionsById: Record<
-    string,
-    | Action<z.ZodTypeAny, z.ZodTypeAny>
-    | PromiseLike<Action<z.ZodTypeAny, z.ZodTypeAny>>
-  > = {};
+  private actionsById: Record<string, any> = {};
   private pluginsByName: Record<string, PluginProvider> = {};
   private schemasByName: Record<string, Schema> = {};
   private valueByTypeAndName: Record<string, Record<string, any>> = {};

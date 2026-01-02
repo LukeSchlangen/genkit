@@ -57,13 +57,13 @@ export function defineFlowTools(server: McpServer, manager: McpRuntimeManager) {
       title: 'Run Flow',
       description: 'Runs the flow with the provided input',
       inputSchema: {
-        flowName: z.string().describe('name of the flow'),
+        flowName: z.string().describe('name of the flow') as any,
         input: z
           .string()
           .describe(
             'Flow input as JSON object encoded as string (it will be passed through `JSON.parse`). Must conform to the schema.'
           )
-          .optional(),
+          .optional() as any,
       },
     },
     async ({ flowName, input }) => {

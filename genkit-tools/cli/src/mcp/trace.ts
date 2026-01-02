@@ -34,7 +34,7 @@ export function defineTraceTools(
           .string()
           .describe(
             'trace id (typically returned after running a flow or other actions)'
-          ),
+          ) as any,
       },
     },
     async ({ traceId }) => {

@@ -81,13 +81,13 @@ export async function defineDocsTool(server: McpServer) {
         language: z
           .enum(['js', 'go', 'python'])
           .describe('which language these docs are for (default js).')
-          .default('js'),
+          .default('js') as any,
         files: z
           .array(z.string())
           .describe(
             'Specific docs files to look up. If empty or not specified an index will be returned. Always lookup index first for exact file names.'
           )
-          .optional(),
+          .optional() as any,
       },
     },
     async ({ language, files }) => {

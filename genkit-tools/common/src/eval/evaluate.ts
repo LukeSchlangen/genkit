@@ -483,6 +483,7 @@ async function gatherEvalInput(params: {
     logger.warn('No valid traceId available...');
     return {
       ...state,
+      output: undefined,
       error: state.evalError,
       testCaseId: state.testCaseId,
       traceIds: traceIds,
@@ -512,6 +513,7 @@ async function gatherEvalInput(params: {
     return {
       testCaseId: state.testCaseId,
       input,
+      output: undefined,
       error: `Unable to extract any spans from trace ${traceId}`,
       reference: state.reference,
       custom,
@@ -523,6 +525,7 @@ async function gatherEvalInput(params: {
     return {
       testCaseId: state.testCaseId,
       input,
+      output: undefined,
       error:
         getSpanErrorMessage(nestedSpan) ?? `Unknown error in trace ${traceId}`,
       reference: state.reference,
@@ -554,7 +557,7 @@ function getSpanErrorMessage(span: SpanData): string | undefined {
     // It's possible for a trace to have multiple exception events,
     // however we currently only expect and display the first one.
     const event = span.timeEvents?.timeEvent
-      ?.filter((e) => e.annotation.description === 'exception')
+      ?.filter((e: any) => e?.annotation?.description === 'exception')
       .shift();
     return (
       (event?.annotation?.attributes['exception.message'] as string) ?? 'Error'

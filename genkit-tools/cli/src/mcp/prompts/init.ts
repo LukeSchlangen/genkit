@@ -133,7 +133,7 @@ export function defineInitPrompt(server: McpServer) {
       title: 'Initialize Genkit',
       description: 'Initializes a new Genkit project',
       argsSchema: {
-        lang: z.enum(['js', 'go']).optional(),
+        lang: z.enum(['js', 'go']).optional() as any,
       },
     },
     ({ lang }) => {

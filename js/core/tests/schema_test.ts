@@ -149,8 +149,8 @@ describe('toJsonSchema', () => {
         }),
       }),
       {
-        $schema: 'http://json-schema.org/draft-07/schema#',
-        additionalProperties: true,
+        $schema: 'https://json-schema.org/draft/2020-12/schema',
+        additionalProperties: false,
         properties: {
           output: {
             type: 'string',

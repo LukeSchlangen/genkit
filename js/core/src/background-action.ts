@@ -222,7 +222,7 @@ export type BackgroundActionParams<
   outputSchema?: O;
   outputJsonSchema?: JSONSchema7;
   metadata?: Record<string, any>;
-  use?: Middleware<z.infer<I>, z.infer<O>>[];
+  use?: Middleware<z.infer<I>, Operation<z.infer<O>>>[];
   streamSchema?: S;
 };
 

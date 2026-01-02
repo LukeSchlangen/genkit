@@ -35,7 +35,7 @@ export async function defineUsageGuideTool(server: McpServer) {
           .enum(['js', 'go'])
           .describe('which language this usage guide is for')
           .default('js')
-          .optional(),
+          .optional() as any,
       },
     },
     async ({ language }) => {

@@ -12,7 +12,7 @@
     "@genkit-ai/google-cloud": "workspace:*",
     "@genkit-ai/google-genai": "workspace:*",
     "genkit": "workspace:*",
-    "zod": "^3.22.4"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "tsx": "^4.7.1",

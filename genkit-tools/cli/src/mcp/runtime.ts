@@ -34,8 +34,8 @@ export function defineRuntimeTools(
         {command: 'go', args: ['run', 'main.go']}
         {command: 'npm', args: ['run', 'dev']}`,
       inputSchema: {
-        command: z.string(),
-        args: z.array(z.string()),
+        command: z.string() as any,
+        args: z.array(z.string()) as any,
       },
     },
     async ({ command, args }) => {
