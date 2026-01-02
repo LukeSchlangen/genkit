@@ -409,6 +409,8 @@ export async function resolveResumeOption(
         finishMessage:
           'One or more tools triggered interrupts while resuming generation. The model was not called.',
         message: lastMessage,
+        custom: {},
+        raw: {},
       },
     };
   }

@@ -412,7 +412,7 @@ export async function generate<
     tools,
     resources,
   });
-  return new GenerateResponse<O>(response, {
+  return new GenerateResponse<z.infer<O>>(response, {
     request: response.request ?? request,
     parser: resolvedFormat?.handler(request.output?.schema).parseMessage,
   });
@@ -629,7 +629,7 @@ export type GenerateStreamOptions<
 
 export interface GenerateStreamResponse<O extends z.ZodTypeAny = z.ZodTypeAny> {
   get stream(): AsyncIterable<GenerateResponseChunk>;
-  get response(): Promise<GenerateResponse<O>>;
+  get response(): Promise<GenerateResponse<z.infer<O>>>;
 }
 
 export function generateStream<

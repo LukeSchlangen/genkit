@@ -230,26 +230,26 @@ export function defineModel<
     modelActionOptions(options),
     (input, ctx) => {
       const startTimeMs = performance.now();
-      const secondParam =
-        options.apiVersion === 'v2'
-          ? ctx
-          : ctx.streamingRequested
-            ? ctx.sendChunk
-            : undefined;
-      return runner(input, secondParam).then((response) => {
-        const timedResponse = {
-          ...response,
-          latencyMs: performance.now() - startTimeMs,
-        };
-        return timedResponse;
-      });
+          const secondParam =
+            options.apiVersion === 'v2'
+              ? ctx
+              : ctx.streamingRequested
+                ? ctx.sendChunk
+                : undefined;
+          return runner(input, secondParam).then((response) => {
+            const timedResponse = {
+              ...response,
+              latencyMs: performance.now() - startTimeMs,
+            };
+            return timedResponse;
+          });
     }
   );
-  Object.assign(act, {
-    __configSchema: options.configSchema || z.unknown(),
-  });
-  return act as ModelAction<CustomOptionsSchema>;
-}
+        Object.assign(act, {
+          __configSchema: options.configSchema || z.unknown(),
+        });
+        return act as ModelAction<CustomOptionsSchema>;
+      }
 
 export type DefineBackgroundModelOptions<
   CustomOptionsSchema extends z.ZodTypeAny = z.ZodTypeAny,

@@ -193,7 +193,7 @@ export class Chat {
     CustomOptions extends z.ZodTypeAny = typeof GenerationCommonConfigSchema,
   >(
     options: string | Part[] | GenerateStreamOptions<O, CustomOptions>
-  ): GenerateStreamResponse<z.infer<O>> {
+  ): GenerateStreamResponse<O> {
     const channel = new Channel<GenerateResponseChunk>();
     const resolvedOptions = resolveSendOptions(options);
 

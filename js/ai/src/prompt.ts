@@ -171,7 +171,7 @@ export interface ExecutablePrompt<
   stream(
     input?: I,
     opts?: PromptGenerateOptions<O, CustomOptions>
-  ): GenerateStreamResponse<z.infer<O>>;
+  ): GenerateStreamResponse<O>;
 
   /**
    * Renders the prompt template based on user input.
@@ -378,7 +378,7 @@ function definePromptAsync<
     rendererActionConfig,
     (action) => {
       (action as PromptAction<I>).__executablePrompt =
-        executablePrompt as never as ExecutablePrompt<z.infer<I>>;
+        executablePrompt as any;
     }
   ) as Promise<PromptAction<I>>;
 
@@ -502,14 +502,14 @@ function wrapInExecutablePrompt<
   executablePrompt.stream = (
     input?: I,
     opts?: PromptGenerateOptions<O, CustomOptions>
-  ): GenerateStreamResponse<z.infer<O>> => {
+  ): GenerateStreamResponse<O> => {
     return generateStream(
       wrapOpts.registry,
       wrapOpts.renderOptionsFn(input, opts)
     );
   };
 
-  executablePrompt.asTool = async (): Promise<ToolAction<I, O>> => {
+  executablePrompt.asTool = async (): Promise<any> => {
     return (await wrapOpts.rendererAction) as unknown as ToolAction<I, O>;
   };
   return executablePrompt;

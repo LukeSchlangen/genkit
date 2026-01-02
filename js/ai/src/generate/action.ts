@@ -365,7 +365,7 @@ async function generate(
 
   if (model.__action.actionType === 'background-model') {
     response = new GenerateResponse(
-      { operation: modelResponse },
+      { operation: modelResponse, custom: {}, raw: {} },
       {
         request,
         parser: format?.handler(request.output?.schema).parseMessage,

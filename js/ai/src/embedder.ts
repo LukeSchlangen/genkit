@@ -234,9 +234,9 @@ async function resolveEmbedder<
 ): Promise<ResolvedEmbedder<CustomOptions>> {
   if (typeof params.embedder === 'string') {
     return {
-      embedderAction: await registry.lookupAction(
+      embedderAction: (await registry.lookupAction(
         `/embedder/${params.embedder}`
-      ),
+      )) as any,
     };
   } else if (Object.hasOwnProperty.call(params.embedder, '__action')) {
     return {
@@ -273,11 +273,13 @@ export async function embedMany<
 ): Promise<EmbeddingBatch> {
   let embedder: EmbedderAction<ConfigSchema>;
   if (typeof params.embedder === 'string') {
-    embedder = await registry.lookupAction(`/embedder/${params.embedder}`);
+    embedder = (await registry.lookupAction(
+      `/embedder/${params.embedder}`
+    )) as any;
   } else if (Object.hasOwnProperty.call(params.embedder, 'info')) {
-    embedder = await registry.lookupAction(
+    embedder = (await registry.lookupAction(
       `/embedder/${(params.embedder as EmbedderReference).name}`
-    );
+    )) as any;
   } else {
     embedder = params.embedder as EmbedderAction<ConfigSchema>;
   }

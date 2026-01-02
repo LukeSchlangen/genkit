@@ -138,7 +138,7 @@ export type DynamicToolAction<
     };
   };
 
-export interface ToolRunOptions extends ActionRunOptions<z.ZodTypeAny> {
+export interface ToolRunOptions extends ActionRunOptions<any> {
   /**
    * If resumed is supplied to a tool at runtime, that means that it was previously interrupted and this is a second
    * @beta
@@ -223,7 +223,7 @@ export async function resolveTools<
       } else if ((ref as ToolDefinition).name) {
         return await lookupToolByName(
           registry,
-          (ref as ToolDefinition).metadata?.originalName ||
+          ((ref as ToolDefinition).metadata?.originalName as string) ||
             (ref as ToolDefinition).name
         );
       }
