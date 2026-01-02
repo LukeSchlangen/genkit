@@ -306,7 +306,7 @@ export type MultipartToolFn<I extends z.ZodTypeAny, O extends z.ZodTypeAny> = (
 export function defineTool<I extends z.ZodTypeAny, O extends z.ZodTypeAny>(
   registry: Registry,
   config: { multipart: true } & ToolConfig<I, O>,
-  fn?: ToolFn<I, O>
+  fn?: MultipartToolFn<I, O>
 ): MultipartToolAction<I, O>;
 export function defineTool<I extends z.ZodTypeAny, O extends z.ZodTypeAny>(
   registry: Registry,
@@ -466,12 +466,16 @@ function interruptTool(registry?: Registry) {
 
 export function tool<I extends z.ZodTypeAny, O extends z.ZodTypeAny>(
   config: { multipart: true } & ToolConfig<I, O>,
-  fn?: ToolFn<I, O>
+  fn?: MultipartToolFn<I, O>
 ): MultipartToolAction<I, O>;
 export function tool<I extends z.ZodTypeAny, O extends z.ZodTypeAny>(
   config: ToolConfig<I, O>,
   fn?: ToolFn<I, O>
 ): ToolAction<I, O>;
+export function tool<I extends z.ZodTypeAny, O extends z.ZodTypeAny>(
+  config: { multipart?: true } & ToolConfig<I, O>,
+  fn?: ToolFn<I, O> | MultipartToolFn<I, O>
+): ToolAction<I, O> | MultipartToolAction<I, O>;
 
 /**
  * Defines a dynamic tool. Dynamic tools are just like regular tools but will not be registered in the
