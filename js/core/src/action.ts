@@ -31,6 +31,7 @@ import {
   runInNewSpan,
   setCustomMetadataAttributes,
 } from './tracing.js';
+import { output } from 'zod';
 
 export { StatusCodes, StatusSchema, type Status } from './statusTypes.js';
 export { InMemoryStreamManager, StreamNotFoundError } from './streaming.js';
@@ -267,14 +268,14 @@ export function actionWithMiddleware<
 
       const currentMiddleware = middleware[index];
       if (currentMiddleware.length === 3) {
-        return (currentMiddleware as MiddlewareWithOptions<I, O, z.infer<S>>)(
+        return (currentMiddleware as MiddlewareWithOptions<output<I>, output<O>, output<S>>)(
           req,
           opts,
           async (modifiedReq, modifiedOptions) =>
             dispatch(index + 1, modifiedReq || req, modifiedOptions || opts)
         );
       } else if (currentMiddleware.length === 2) {
-        return (currentMiddleware as SimpleMiddleware<I, O>)(
+        return (currentMiddleware as SimpleMiddleware<output<I>, output<O>>)(
           req,
           async (modifiedReq) => dispatch(index + 1, modifiedReq || req, opts)
         );
@@ -302,7 +303,7 @@ export function action<
     input: z.infer<I>,
     options: ActionFnArg<z.infer<S>>
   ) => Promise<z.infer<O>>
-): Action<I, O, z.infer<S>> {
+): Action<I, O, S> {
   const actionName =
     typeof config.name === 'string'
       ? config.name
@@ -320,11 +321,11 @@ export function action<
   } as ActionMetadata<I, O, S>;
 
   const actionFn = (async (
-    input?: I,
+    input?: z.infer<I>,
     options?: ActionRunOptions<z.infer<S>>
   ) => {
     return (await actionFn.run(input, options)).result;
-  }) as Action<I, O, z.infer<S>>;
+  }) as Action<I, O, S>;
   actionFn.__action = { ...actionMetadata };
 
   actionFn.run = async (
